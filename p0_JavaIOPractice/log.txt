@@ -1,0 +1,23 @@
+Hyeon Jun Jeong, hjeong44@wisc.edu, CS400-001
+Please type your race: Asian
+Please type your age: Exception test
+Error has occured!
+Please type your race: Asian
+Please type your age: 22
+Please type your major: Computer Science
+Your race is Asian
+Your age is 22
+Your major is Computer Science
+Please type input file name (default name is "input.txt"): exception.txt
+File does not Exist!
+Please type input file name (default name is "input.txt"): input.txt
+It is written: This statement is false
+It is written: The cake is lie
+Please type output file name (dfault name is "output.txt"): output.txt
+Please type anything you want to type in (Enter "Exit" to exit): hey
+listen
+hey
+hey
+listen
+exit
+You are now good to leave
