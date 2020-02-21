@@ -22,11 +22,21 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     private int color;
     private Node<K, V> left;
     private Node<K, V> right;
+    private Node<K, V> parent;
 
     public Node(K k, V v, int c) {
       this.key = k;
       this.value = v;
       this.color = c;
+    }
+
+    public Node<K, V> sibiling() {
+      if (parent == null)
+        return null;
+      else if (this == parent.left)
+        return parent.right;
+      else
+        return parent.left;
     }
 
     public boolean equal(Object o) {
@@ -160,11 +170,15 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     InOrderTraversal(output, root);
     return output;
   }
+
   private void InOrderTraversal(List<K> list, Node<K, V> root) {
-    if(root == null) return;
-    if(root.left != null) InOrderTraversal(list, root.left);
+    if (root == null)
+      return;
+    if (root.left != null)
+      InOrderTraversal(list, root.left);
     list.add(root.key);
-    if(root.right != null) InOrderTraversal(list, root.right);
+    if (root.right != null)
+      InOrderTraversal(list, root.right);
   }
 
   @Override
@@ -173,11 +187,15 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     PreOrderTraversal(output, root);
     return output;
   }
+
   private void PreOrderTraversal(List<K> list, Node<K, V> root) {
-    if(root == null) return;
+    if (root == null)
+      return;
     list.add(root.key);
-    if(root.left != null) PreOrderTraversal(list, root.left);
-    if(root.right != null) PreOrderTraversal(list, root.right);
+    if (root.left != null)
+      PreOrderTraversal(list, root.left);
+    if (root.right != null)
+      PreOrderTraversal(list, root.right);
   }
 
   @Override
@@ -186,33 +204,43 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     PostOrderTraversal(output, root);
     return output;
   }
+
   private void PostOrderTraversal(List<K> list, Node<K, V> root) {
-    if(root == null) return;
-    if(root.left != null) PostOrderTraversal(list, root.left);
-    if(root.right != null) PostOrderTraversal(list, root.right);
+    if (root == null)
+      return;
+    if (root.left != null)
+      PostOrderTraversal(list, root.left);
+    if (root.right != null)
+      PostOrderTraversal(list, root.right);
     list.add(root.key);
   }
 
   @Override
   public List<K> getLevelOrderTraversal() {
     List<K> output = new ArrayList<K>();
-    for(int i = 1; i <= getHeight(); i++)
+    for (int i = 1; i <= getHeight(); i++)
       LevelOrderTraversal(root, i, output);
     return output;
   }
-  private void LevelOrderTraversal (Node<K, V> root ,int level, List<K> list) { 
-    if (root == null) return; 
-    if (level == 1) list.add(root.key);
-    else if (level > 1) { 
-      LevelOrderTraversal(root.left, level-1, list); 
-      LevelOrderTraversal(root.right, level-1, list); 
-    } 
+
+  private void LevelOrderTraversal(Node<K, V> root, int level, List<K> list) {
+    if (root == null)
+      return;
+    if (level == 1)
+      list.add(root.key);
+    else if (level > 1) {
+      LevelOrderTraversal(root.left, level - 1, list);
+      LevelOrderTraversal(root.right, level - 1, list);
+    }
   }
 
   @Override
   public void insert(K key, V value) throws IllegalNullKeyException, DuplicateKeyException {
-    if(key == null) throw new IllegalNullKeyException();
-    Node<K, V> input = new Node<K, V>(key, value, 0);
+    if (key == null)
+      throw new IllegalNullKeyException();
+    Node<K, V> input = new Node<K, V>(key, value, RED);
+    if (root == null)
+      input.color = BLACK;
     root = insert(input, root);
   }
   private Node<K, V> insert(Node<K, V> node, Node<K, V> root) throws DuplicateKeyException {
@@ -220,54 +248,84 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
       size++;
       return node;
     }
-    if (root.equal(node)) throw new DuplicateKeyException();
-    if (root.key.compareTo(node.key) > 0) root.left = insert(node, root.left);
-    if (root.key.compareTo(node.key) < 0) root.right = insert(node, root.right);
+    if (root.equal(node))
+      throw new DuplicateKeyException();
+    if (root.key.compareTo(node.key) > 0) {
+      root.left = insert(node, root.left);
+      root.left.parent = root;
+    }
+    if (root.key.compareTo(node.key) < 0) {
+      root.right = insert(node, root.right);
+      root.right.parent = root;
+    }
+    insertFix(node);
     return root;
+  }
+  private void insertFix(Node<K, V> node) {
+    if(node.parent.color == RED) {
+      if(node.parent.sibiling() == null) {
+        
+      } else if (node.parent.sibiling().color == RED) {
+        
+      }
+    }
   }
 
   @Override
   public boolean remove(K key) throws IllegalNullKeyException {
-    if(key == null) throw new IllegalNullKeyException();
+    if (key == null)
+      throw new IllegalNullKeyException();
     int sizeBefore = size;
     root = remove(root, key);
-    if (size == sizeBefore) return false;
-    else return true;
+    if (size == sizeBefore)
+      return false;
+    else
+      return true;
   }
-  private Node<K, V> remove(Node<K, V> root, K key){
-    if (root == null) return null;
-    
-    if(root.key.compareTo(key) > 0) root.left = remove(root.left, key);
-    if(root.key.compareTo(key) < 0) root.right = remove(root.right, key);
-    
-    //if node has one child
-    if(root.left == null) return root.right;
-    if(root.right == null) return root.left;
-    
-    //if node has two children
+
+  private Node<K, V> remove(Node<K, V> root, K key) {
+    if (root == null)
+      return null;
+
+    if (root.key.compareTo(key) > 0)
+      root.left = remove(root.left, key);
+    if (root.key.compareTo(key) < 0)
+      root.right = remove(root.right, key);
+
+    // if node has one child
+    if (root.left == null)
+      return root.right;
+    if (root.right == null)
+      return root.left;
+
+    // if node has two children
     Node<K, V> minChild = root.right;
-    while(minChild.left != null) minChild = root.left;
-    
+    while (minChild.left != null)
+      minChild = root.left;
+
     root.key = minChild.key;
     root.value = minChild.value;
-    root.right = remove(root.right,minChild.key);
-    
+    root.right = remove(root.right, minChild.key);
+
     size--;
     return root;
   }
 
   @Override
   public V get(K key) throws IllegalNullKeyException, KeyNotFoundException {
-    if(key == null) throw new IllegalNullKeyException();
+    if (key == null)
+      throw new IllegalNullKeyException();
     Node<K, V> node = getNodeWith(root, key);
-    if(node == null) throw new KeyNotFoundException();
+    if (node == null)
+      throw new KeyNotFoundException();
     return node.value;
   }
 
   @Override
-  public boolean contains(K key) throws IllegalNullKeyException { 
-    if(key == null) throw new IllegalNullKeyException();
-      return getNodeWith(root, key) != null;
+  public boolean contains(K key) throws IllegalNullKeyException {
+    if (key == null)
+      throw new IllegalNullKeyException();
+    return getNodeWith(root, key) != null;
   }
 
   @Override
@@ -282,26 +340,83 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     print(root, 0);
     System.out.println("----------");
   }
+
   private void print(Node<K, V> root, int space) {
-    if (root == null)  
-      return;  
-    
-    space += 5;  
-    
-    print(root.right, space);  
-  
-    System.out.print("\n");  
-    for (int i = 5; i < space; i++)  
-        System.out.print(" ");  
-    System.out.print(root.key + "\n");  
-  
-    // Process left child  
+    if (root == null)
+      return;
+
+    space += 5;
+
+    print(root.right, space);
+
+    System.out.print("\n");
+    for (int i = 5; i < space; i++)
+      System.out.print(" ");
+    if (root.color == RED)
+      System.out.print("R");
+    else
+      System.out.print("B");
+    System.out.print(root.key + "\n");
+
+    // Process left child
     print(root.left, space);
   }
 
 
   // TODO: override the insert method so that it rebalances
   // according to red-black tree insert algorithm.
+
+
+  private void rotateLeft(Node<K, V> root) {
+    if (root.parent != null) {
+      if (root == root.parent.left) {
+        root.parent.left = root.right;
+      } else {
+        root.parent.right = root.right;
+      }
+      root.right.parent = root.parent;
+      root.parent = root.right;
+      if (root.right.left != null) {
+        root.right.left.parent = root;
+      }
+      root.right = root.right.left;
+      root.parent.left = root;
+    } else {
+      Node<K, V> right = root.right;
+      root.right = right.left;
+      right.left.parent = root;
+      root.parent = right;
+      right.left = root;
+      right.parent = null;
+      root = right;
+    }
+  }
+
+  private void rotateRight(Node<K, V> root) {
+    if (root.parent != null) {
+      if (root == root.parent.left) {
+        root.parent.left = root.left;
+      } else {
+        root.parent.right = root.left;
+      }
+
+      root.left.parent = root.parent;
+      root.parent = root.left;
+      if (root.left.right != null) {
+        root.left.right.parent = root;
+      }
+      root.left = root.left.right;
+      root.parent.right = root;
+    } else {// Need to rotate root
+      Node<K, V> left = root.left;
+      root.left = root.left.right;
+      left.right.parent = root;
+      root.parent = left;
+      left.right = root;
+      left.parent = root;
+      root = left;
+    }
+  }
 
 
   // TODO [OPTIONAL] you may override print() to include
