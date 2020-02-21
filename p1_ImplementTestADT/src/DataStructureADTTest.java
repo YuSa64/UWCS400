@@ -87,34 +87,32 @@ abstract class DataStructureADTTest<T extends DataStructureADT<String, String>> 
     String key = "1";
     String value = "one";
     ds.insert(key, value);
-    assert(ds.remove(key));
+    assert (ds.remove(key));
     if (ds.get(key) != null)
       fail("get(" + key + ") returned " + ds.get(key) + " which should have been removed");
   }
 
   @Test
   void test06_insert_many_size() {
-    for(int i = 0; i < 100; i++)
-      ds.insert(""+i, ""+i);
-    if(ds.size() != 100)
+    for (int i = 0; i < 100; i++)
+      ds.insert("" + i, "" + i);
+    if (ds.size() != 100)
       fail("size does not correct");
-    
-    for(int i = ds.size(); i < 1000; i++)
-      ds.insert(""+i, ""+i);
-    if(ds.size() != 1000)
+
+    for (int i = ds.size(); i < 1000; i++)
+      ds.insert("" + i, "" + i);
+    if (ds.size() != 1000)
       fail("size does not correct");
-    
-    for(int i = ds.size(); i < 10000; i++)
-      ds.insert(""+i, ""+i);
-    if(ds.size() != 10000)
+
+    for (int i = ds.size(); i < 10000; i++)
+      ds.insert("" + i, "" + i);
+    if (ds.size() != 10000)
       fail("size does not correct");
-    
-    /* This test takes too long time.
-    for(int i = ds.size(); i < 100000; i++)
-      ds.insert(""+i, ""+i);
-    if(ds.size() != 100000)
-      fail("size does not correct");
-      */
+
+    /*
+     * This test takes too long time. for(int i = ds.size(); i < 100000; i++) ds.insert(""+i, ""+i);
+     * if(ds.size() != 100000) fail("size does not correct");
+     */
   }
 
   @Test
@@ -122,8 +120,8 @@ abstract class DataStructureADTTest<T extends DataStructureADT<String, String>> 
     String key = "1";
     String value = "one";
     ds.insert("1", "one");
-    for(int i = 2; i < 100; i ++)
-      ds.insert(""+i, ""+i);
+    for (int i = 2; i < 100; i++)
+      ds.insert("" + i, "" + i);
     try {
       ds.insert(key, value);
       fail("duplicate exception not thrown");
@@ -131,8 +129,7 @@ abstract class DataStructureADTTest<T extends DataStructureADT<String, String>> 
       ds.remove(key);
       try {
         ds.insert(key, value);
-      }
-      catch (RuntimeException re2) {        
+      } catch (RuntimeException re2) {
         fail("duplicate exception thrown");
       }
     }
@@ -140,31 +137,41 @@ abstract class DataStructureADTTest<T extends DataStructureADT<String, String>> 
 
   // TODO: add more tests of your own design to ensure that you can detect implementation that fail
   @Test
-  void test08_shadow_array_time() {
-    for(int i = 0; i < 100; i++)
-      ds.insert(""+i, ""+i);
+  void test08_shadow_array_time() { //This test is unstable due to way to handle array.
+    for (int i = 0; i < 1000; i++)
+      ds.insert("" + i, "" + i);
+    // Change to shadow array, than make a new shadow array (Expand), O(N)
     long pre_start = System.nanoTime();
-    ds.insert("100", "100");
+    ds.insert("1000", "1000");
     long pre_end = System.nanoTime();
+    //
+    // Insert after expand, O(1)
     long pst_start = System.nanoTime();
-    ds.insert("101", "101");
+    ds.insert("1001", "1001");
     long pst_end = System.nanoTime();
-    if(pre_end - pre_start < pst_end - pst_start) //if expanding time is less than O(1)
+    if (pre_end - pre_start < pst_end - pst_start) // if expanding time does not exceed O(1)
       fail("Expansion is not working properly");
   }
-  
+
   @Test
-  void test09() {
-    String key = "1";
-    String value = "one";
-    
+  void test09_get_null_key() {
+    try {
+      ds.get(null);
+      fail("Exception does not occur");
+    } catch (IllegalArgumentException e) {
+
+    } catch (Exception e2) {
+      fail("Unexpected exception occured");
+    }
+
   }
-  
+
   @Test
-  void test10() {
-    String key = "1";
-    String value = "one";
-    
+  void test10_get_no_key_null_value() {
+    for (int i = 0; i < 10; i++)
+      ds.insert("" + i, "" + i);
+    if(ds.get("10") != null)
+      fail("Get" + ds.get("10") + ", Expected null");
   }
 
   // Tip: consider different numbers of inserts and removes and how different combinations of insert
