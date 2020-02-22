@@ -240,8 +240,9 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
       throw new IllegalNullKeyException();
     Node<K, V> input = new Node<K, V>(key, value, RED);
     root = insert(input, root);
-    if (root == input) input.color = BLACK;
     insertFix(root);
+    root.color = BLACK;
+    
   }
   private Node<K, V> insert(Node<K, V> node, Node<K, V> root) throws DuplicateKeyException {
     if (root == null) {
@@ -258,6 +259,7 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
       root.right = insert(node, root.right);
       root.right.parent = root;
     }
+
     return root;
   }
   private void insertFix(Node<K, V> node) {
@@ -271,10 +273,14 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     
     if(s == null) {
       if(p == g.left) {
+        if(c == p.right) rotateLeft(p);
         rotateRight(g);
       } else {
+        if(c == p.left) rotateRight(p);
         rotateLeft(g);
       }
+      g.color = RED;
+      p.color = BLACK;
     } else if (s.color == RED) {
       p.color = BLACK;
       s.color = BLACK;
@@ -293,7 +299,6 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     else
       return true;
   }
-
   private Node<K, V> remove(Node<K, V> root, K key) {
     if (root == null)
       return null;
@@ -378,20 +383,20 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
   // according to red-black tree insert algorithm.
 
 
-  private void rotateLeft(Node<K, V> root) {
-    if (root.parent != null) {
-      if (root == root.parent.left) {
-        root.parent.left = root.right;
+  private void rotateLeft(Node<K, V> node) {
+    if (node.parent != null) {
+      if (node == node.parent.left) {
+        node.parent.left = node.right;
       } else {
-        root.parent.right = root.right;
+        node.parent.right = node.right;
       }
-      root.right.parent = root.parent;
-      root.parent = root.right;
-      if (root.right.left != null) {
-        root.right.left.parent = root;
+      node.right.parent = node.parent;
+      node.parent = node.right;
+      if (node.right.left != null) {
+        node.right.left.parent = node;
       }
-      root.right = root.right.left;
-      root.parent.left = root;
+      node.right = node.right.left;
+      node.parent.left = node;
     } else {
       Node<K, V> right = root.right;
       root.right = right.left;
@@ -403,21 +408,21 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     }
   }
 
-  private void rotateRight(Node<K, V> root) {
-    if (root.parent != null) {
-      if (root == root.parent.left) {
-        root.parent.left = root.left;
+  private void rotateRight(Node<K, V> node) {
+    if (node.parent != null) {
+      if (node == node.parent.left) {
+        node.parent.left = node.left;
       } else {
-        root.parent.right = root.left;
+        node.parent.right = node.left;
       }
 
-      root.left.parent = root.parent;
-      root.parent = root.left;
-      if (root.left.right != null) {
-        root.left.right.parent = root;
+      node.left.parent = node.parent;
+      node.parent = node.left;
+      if (node.left.right != null) {
+        node.left.right.parent = node;
       }
-      root.left = root.left.right;
-      root.parent.right = root;
+      node.left = node.left.right;
+      node.parent.right = node;
     } else {
       Node<K, V> left = root.left;
       root.left = left.right;

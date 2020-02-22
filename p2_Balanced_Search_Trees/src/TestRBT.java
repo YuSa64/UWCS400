@@ -74,8 +74,30 @@ public class TestRBT  {
     void testRBT_002_insert_reversed_sorted_order_simple() {
         
         // TODO: implement this test
-        fail("UNIMPLEMENTED TEST");
+      try {
+        rbt.insert(30, "30");  // SHOULD CAUSE REBALANCING
+        Assert.assertTrue(rbt.rootIsBlack());
         
+        rbt.insert(20, "20");
+        Assert.assertTrue(rbt.getKeyOfLeftChildOf(30).equals(20)) ;
+        Assert.assertEquals(rbt.colorOf(20),RBT.RED);
+        
+        rbt.insert(10, "10");
+        Assert.assertTrue(rbt.getKeyOfLeftChildOf(20).equals(10));
+        
+        // IF rebalancing is working,
+        // the tree should have 20 at the root
+        // and 10 as its left child and 30 as its right child
+        Assert.assertEquals(rbt.getKeyAtRoot(), Integer.valueOf(20));
+        Assert.assertEquals(rbt.getKeyOfRightChildOf(20), Integer.valueOf(30));
+        Assert.assertEquals(rbt.getKeyOfLeftChildOf(20), Integer.valueOf(10));
+
+        rbt.print();
+        
+    } catch (Exception e) {
+        //e.printStackTrace();
+        fail( "Unexpected exception 001: "+e.getMessage() );
+    }
     }
 
     /** 
@@ -87,10 +109,32 @@ public class TestRBT  {
      */
     @Test
     void testRBT_003_insert_smallest_largest_middle_order_simple() {
+      
+      // TODO: implement this test
+      try {
+        rbt.insert(10, "10");
+        Assert.assertTrue(rbt.rootIsBlack());
         
-        // TODO: implement this test
-        fail("UNIMPLEMENTED TEST");
+        rbt.insert(30, "30");
+        Assert.assertTrue(rbt.getKeyOfRightChildOf(10).equals(30)) ;
+        Assert.assertEquals(rbt.colorOf(30),RBT.RED);
         
+        rbt.insert(20, "20");  // SHOULD CAUSE REBALANCING
+        Assert.assertTrue(rbt.getKeyOfRightChildOf(20).equals(30));
+        
+        // IF rebalancing is working,
+        // the tree should have 20 at the root
+        // and 10 as its left child and 30 as its right child
+        Assert.assertEquals(rbt.getKeyAtRoot(), Integer.valueOf(20));
+        Assert.assertEquals(rbt.getKeyOfLeftChildOf(20), Integer.valueOf(10));
+        Assert.assertEquals(rbt.getKeyOfRightChildOf(20), Integer.valueOf(30));
+
+        rbt.print();
+        
+    } catch (Exception e) {
+        //e.printStackTrace();
+        fail( "Unexpected exception 001: "+e.getMessage() );
+    }
     }
 
     /** 
@@ -104,7 +148,30 @@ public class TestRBT  {
     void testRBT_004_insert_largest_smallest_middle_order_simple() {
         
         // TODO: implement this test
-        fail("UNIMPLEMENTED TEST");
+      try {
+        rbt.insert(30, "30");
+        Assert.assertTrue(rbt.rootIsBlack());
+        
+        rbt.insert(10, "10");
+        Assert.assertTrue(rbt.getKeyOfLeftChildOf(30).equals(10)) ;
+        Assert.assertEquals(rbt.colorOf(10),RBT.RED);
+        
+        rbt.insert(20, "20");  // SHOULD CAUSE REBALANCING
+        Assert.assertTrue(rbt.getKeyOfLeftChildOf(20).equals(10));
+        
+        // IF rebalancing is working,
+        // the tree should have 20 at the root
+        // and 10 as its left child and 30 as its right child
+        Assert.assertEquals(rbt.getKeyAtRoot(), Integer.valueOf(20));
+        Assert.assertEquals(rbt.getKeyOfRightChildOf(20), Integer.valueOf(30));
+        Assert.assertEquals(rbt.getKeyOfLeftChildOf(20), Integer.valueOf(10));
+
+        rbt.print();
+        
+    } catch (Exception e) {
+        //e.printStackTrace();
+        fail( "Unexpected exception 001: "+e.getMessage() );
+    }
         
     }
     
