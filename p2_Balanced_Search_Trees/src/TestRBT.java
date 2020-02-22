@@ -45,7 +45,7 @@ public class TestRBT  {
             
             rbt.insert(20, "20");
             Assert.assertTrue(rbt.getKeyOfRightChildOf(10).equals(20)) ;
-            Assert.assertEquals(rbt.colorOf(20),RBT.BLACK);
+            Assert.assertEquals(rbt.colorOf(20),RBT.RED);
             
             rbt.insert(30, "30");  // SHOULD CAUSE REBALANCING
             Assert.assertTrue(rbt.getKeyOfRightChildOf(20).equals(30));

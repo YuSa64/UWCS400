@@ -2,10 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implements a generic Red-Black tree extension of BST<K,V>.
+ * Implements a generic Red-Black tree.
  *
- * DO NOT CHANGE THE METHOD SIGNATURES OF PUBLIC METHODS DO NOT ADD ANY PACKAGE LEVEL OR PUBLIC
- * ACCESS METHODS OR FIELDS.
+ * DO NOT CHANGE THE METHOD SIGNATURES OF PUBLIC METHODS
+ * DO NOT ADD ANY PACKAGE LEVEL OR PUBLIC ACCESS METHODS OR FIELDS.
  * 
  * You are not required to override remove. If you do not override this operation, you may still
  * have the method in your type, and have the method throw new UnsupportedOperationException. See
@@ -239,9 +239,9 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     if (key == null)
       throw new IllegalNullKeyException();
     Node<K, V> input = new Node<K, V>(key, value, RED);
-    if (root == null)
-      input.color = BLACK;
     root = insert(input, root);
+    if (root == input) input.color = BLACK;
+    insertFix(root);
   }
   private Node<K, V> insert(Node<K, V> node, Node<K, V> root) throws DuplicateKeyException {
     if (root == null) {
@@ -258,16 +258,27 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
       root.right = insert(node, root.right);
       root.right.parent = root;
     }
-    insertFix(node);
     return root;
   }
   private void insertFix(Node<K, V> node) {
-    if(node.parent.color == RED) {
-      if(node.parent.sibiling() == null) {
-        
-      } else if (node.parent.sibiling().color == RED) {
-        
+    if(node.left != null) insertFix(node.left);
+    if(node.right != null) insertFix(node.right);
+    
+    if(node == null || node.parent == null || node.parent.parent == null) return;
+    
+    Node<K, V> c = node, p = c.parent, g = p.parent, s = p.sibiling();
+    if(p.color == BLACK) return;
+    
+    if(s == null) {
+      if(p == g.left) {
+        rotateRight(g);
+      } else {
+        rotateLeft(g);
       }
+    } else if (s.color == RED) {
+      p.color = BLACK;
+      s.color = BLACK;
+      if(g != this.root) g.color = RED;
     }
   }
 
@@ -384,7 +395,7 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     } else {
       Node<K, V> right = root.right;
       root.right = right.left;
-      right.left.parent = root;
+      if(right.left != null) right.left.parent = root;
       root.parent = right;
       right.left = root;
       right.parent = null;
@@ -407,13 +418,13 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
       }
       root.left = root.left.right;
       root.parent.right = root;
-    } else {// Need to rotate root
+    } else {
       Node<K, V> left = root.left;
-      root.left = root.left.right;
-      left.right.parent = root;
+      root.left = left.right;
+      if(left.right != null) left.right.parent = root;
       root.parent = left;
       left.right = root;
-      left.parent = root;
+      left.parent = null;
       root = left;
     }
   }
