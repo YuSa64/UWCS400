@@ -277,10 +277,10 @@ public class TestRBT  {
         List<Integer> levelorder = new ArrayList<>();
         levelorder.add(20);
         levelorder.add(10);
-        levelorder.add(60);
-        levelorder.add(30);
-        levelorder.add(70);
         levelorder.add(50);
+        levelorder.add(30);
+        levelorder.add(60);
+        levelorder.add(70);
         Assert.assertEquals(rbt.getLevelOrderTraversal(), levelorder);
         
         rbt.print();
