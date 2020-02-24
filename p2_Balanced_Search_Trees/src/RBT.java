@@ -4,8 +4,8 @@ import java.util.List;
 /**
  * Implements a generic Red-Black tree.
  *
- * DO NOT CHANGE THE METHOD SIGNATURES OF PUBLIC METHODS
- * DO NOT ADD ANY PACKAGE LEVEL OR PUBLIC ACCESS METHODS OR FIELDS.
+ * DO NOT CHANGE THE METHOD SIGNATURES OF PUBLIC METHODS DO NOT ADD ANY PACKAGE LEVEL OR PUBLIC
+ * ACCESS METHODS OR FIELDS.
  * 
  * You are not required to override remove. If you do not override this operation, you may still
  * have the method in your type, and have the method throw new UnsupportedOperationException. See
@@ -74,6 +74,8 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
   }
 
   private Node<K, V> getNodeWith(Node<K, V> root, K key) {
+    if(root == null)
+      return null;
     if (root.key.equals(key))
       return root;
     if (root.key.compareTo(key) > 0)
@@ -234,7 +236,64 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     }
   }
 
-  @Override
+
+  // TODO: override the insert method so that it rebalances
+  // according to red-black tree insert algorithm.
+
+
+  private void rotateLeft(Node<K, V> node) {
+    if (node.parent != null) {
+      if (node == node.parent.left) {
+        node.parent.left = node.right;
+      } else {
+        node.parent.right = node.right;
+      }
+      node.right.parent = node.parent;
+      node.parent = node.right;
+      if (node.right.left != null) {
+        node.right.left.parent = node;
+      }
+      node.right = node.right.left;
+      node.parent.left = node;
+    } else {
+      Node<K, V> right = root.right;
+      root.right = right.left;
+      if (right.left != null)
+        right.left.parent = root;
+      root.parent = right;
+      right.left = root;
+      right.parent = null;
+      root = right;
+    }
+  }
+
+  private void rotateRight(Node<K, V> node) {
+    if (node.parent != null) {
+      if (node == node.parent.left) {
+        node.parent.left = node.left;
+      } else {
+        node.parent.right = node.left;
+      }
+
+      node.left.parent = node.parent;
+      node.parent = node.left;
+      if (node.left.right != null) {
+        node.left.right.parent = node;
+      }
+      node.left = node.left.right;
+      node.parent.right = node;
+    } else {
+      Node<K, V> left = root.left;
+      root.left = left.right;
+      if (left.right != null)
+        left.right.parent = root;
+      root.parent = left;
+      left.right = root;
+      left.parent = null;
+      root = left;
+    }
+  }
+
   public void insert(K key, V value) throws IllegalNullKeyException, DuplicateKeyException {
     if (key == null)
       throw new IllegalNullKeyException();
@@ -242,8 +301,9 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     root = insert(input, root);
     insertFix(root);
     root.color = BLACK;
-    
+
   }
+
   private Node<K, V> insert(Node<K, V> node, Node<K, V> root) throws DuplicateKeyException {
     if (root == null) {
       size++;
@@ -262,21 +322,28 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
 
     return root;
   }
+
   private void insertFix(Node<K, V> node) {
-    if(node.left != null) insertFix(node.left);
-    if(node.right != null) insertFix(node.right);
-    
-    if(node == null || node.parent == null || node.parent.parent == null) return;
-    
+    if (node.left != null)
+      insertFix(node.left);
+    if (node.right != null)
+      insertFix(node.right);
+
+    if (node == null || node.parent == null || node.parent.parent == null)
+      return;
+
     Node<K, V> c = node, p = c.parent, g = p.parent, s = p.sibiling();
-    if(p.color == BLACK) return;
-    
-    if(s == null) {
-      if(p == g.left) {
-        if(c == p.right) rotateLeft(p);
+    if (p.color == BLACK)
+      return;
+
+    if (s == null) {
+      if (p == g.left) {
+        if (c == p.right)
+          rotateLeft(p);
         rotateRight(g);
       } else {
-        if(c == p.left) rotateRight(p);
+        if (c == p.left)
+          rotateRight(p);
         rotateLeft(g);
       }
       g.color = RED;
@@ -284,7 +351,8 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     } else if (s.color == RED) {
       p.color = BLACK;
       s.color = BLACK;
-      if(g != this.root) g.color = RED;
+      if (g != this.root)
+        g.color = RED;
     }
   }
 
@@ -299,31 +367,33 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     else
       return true;
   }
+
   private Node<K, V> remove(Node<K, V> root, K key) {
     if (root == null)
       return null;
 
     if (root.key.compareTo(key) > 0)
       root.left = remove(root.left, key);
-    if (root.key.compareTo(key) < 0)
+    else if (root.key.compareTo(key) < 0)
       root.right = remove(root.right, key);
 
     // if node has one child
-    if (root.left == null)
+    else if (root.left == null)
       return root.right;
-    if (root.right == null)
+    else if (root.right == null)
       return root.left;
-
-    // if node has two children
-    Node<K, V> minChild = root.right;
-    while (minChild.left != null)
-      minChild = root.left;
-
-    root.key = minChild.key;
-    root.value = minChild.value;
-    root.right = remove(root.right, minChild.key);
-
-    size--;
+    else {
+      // if node has two children
+      Node<K, V> minChild = root.right;
+      while (minChild.left != null)
+        minChild = minChild.left;
+  
+      root.key = minChild.key;
+      root.value = minChild.value;
+      root.right = remove(root.right, minChild.key);
+  
+      size--;
+    }
     return root;
   }
 
@@ -350,7 +420,8 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     return size;
   }
 
-  @Override
+  // TODO [OPTIONAL] you may override print() to include
+  // color R-red or B-black.
   public void print() {
     System.out.println("----------");
     print(root, 0);
@@ -361,13 +432,21 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     if (root == null)
       return;
 
-    space += 5;
+    space += 6;
 
     print(root.right, space);
 
-    System.out.print("\n");
-    for (int i = 5; i < space; i++)
-      System.out.print(" ");
+    System.out.print("|");
+    for (int i = 6; i < space; i++) {
+      if (i < space - 7)
+        System.out.print(" ");
+      else if (i == space - 7)
+        System.out.print("|");
+      else if (i != space - 1)
+        System.out.print("-");
+      else
+        System.out.print("|");
+    }
     if (root.color == RED)
       System.out.print("R");
     else
@@ -377,65 +456,5 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
     // Process left child
     print(root.left, space);
   }
-
-
-  // TODO: override the insert method so that it rebalances
-  // according to red-black tree insert algorithm.
-
-
-  private void rotateLeft(Node<K, V> node) {
-    if (node.parent != null) {
-      if (node == node.parent.left) {
-        node.parent.left = node.right;
-      } else {
-        node.parent.right = node.right;
-      }
-      node.right.parent = node.parent;
-      node.parent = node.right;
-      if (node.right.left != null) {
-        node.right.left.parent = node;
-      }
-      node.right = node.right.left;
-      node.parent.left = node;
-    } else {
-      Node<K, V> right = root.right;
-      root.right = right.left;
-      if(right.left != null) right.left.parent = root;
-      root.parent = right;
-      right.left = root;
-      right.parent = null;
-      root = right;
-    }
-  }
-
-  private void rotateRight(Node<K, V> node) {
-    if (node.parent != null) {
-      if (node == node.parent.left) {
-        node.parent.left = node.left;
-      } else {
-        node.parent.right = node.left;
-      }
-
-      node.left.parent = node.parent;
-      node.parent = node.left;
-      if (node.left.right != null) {
-        node.left.right.parent = node;
-      }
-      node.left = node.left.right;
-      node.parent.right = node;
-    } else {
-      Node<K, V> left = root.left;
-      root.left = left.right;
-      if(left.right != null) left.right.parent = root;
-      root.parent = left;
-      left.right = root;
-      left.parent = null;
-      root = left;
-    }
-  }
-
-
-  // TODO [OPTIONAL] you may override print() to include
-  // color R-red or B-black.
 
 }
