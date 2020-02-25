@@ -379,9 +379,9 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
 
     // if node has one child
     else if (root.left == null)
-      return root.right;
+      root = root.right;
     else if (root.right == null)
-      return root.left;
+      root = root.left;
     else {
       // if node has two children
       Node<K, V> minChild = root.right;
@@ -392,8 +392,8 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
       root.value = minChild.value;
       root.right = remove(root.right, minChild.key);
   
-      size--;
     }
+    size--;
     return root;
   }
 
