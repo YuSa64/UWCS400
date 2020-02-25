@@ -256,40 +256,5 @@ public class TestRBT  {
       }
     }
     
-    // Does delete work?  Does the tree maintain balance when a key is deleted?
-    // If delete is not implemented, does calling it throw an UnsupportedOperationException
-    @Test
-    void testBST_009_insert_balanced_remove_root() {
-      try {      
-        rbt.insert(10, "10");
-        rbt.insert(20, "20");
-        rbt.insert(30, "30");
-        rbt.insert(40, "40");
-        rbt.insert(50, "50");
-        rbt.insert(60, "60");
-        rbt.insert(70, "70");
-        
-        Assert.assertTrue(rbt.remove(40));
-        Assert.assertTrue(rbt.getKeyAtRoot() == 20);
-        rbt.get(40);
-
-      } catch (KeyNotFoundException e) {
-        List<Integer> levelorder = new ArrayList<>();
-        levelorder.add(20);
-        levelorder.add(10);
-        levelorder.add(50);
-        levelorder.add(30);
-        levelorder.add(60);
-        levelorder.add(70);
-        Assert.assertEquals(rbt.getLevelOrderTraversal(), levelorder);
-        
-        rbt.print();
-
-        
-      }catch (Exception e1) {
-        e1.printStackTrace();
-        fail("Unexpected exception 001: " + e1.getMessage());
-      }
-    }
 
 } // copyright Deb Deppeler, all rights reserved, DO NOT SHARE
