@@ -1,5 +1,5 @@
 import static org.junit.Assert.fail;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
@@ -189,14 +189,7 @@ public class TestBST {
   @Test
   void testBST_005_bst_insert_inorder_equal() {
     try {
-      List<Integer> levelorder = new ArrayList<>();
-      levelorder.add(40);
-      levelorder.add(20);
-      levelorder.add(60);
-      levelorder.add(10);
-      levelorder.add(30);
-      levelorder.add(50);
-      levelorder.add(70);
+      List<Integer> levelorder = Arrays.asList(new Integer[] {40, 20, 60, 10, 30, 50, 70});
       bst.insert(40, "40");
       bst.insert(20, "20");
       bst.insert(60, "60");
@@ -204,6 +197,7 @@ public class TestBST {
       bst.insert(30, "30");
       bst.insert(50, "50");
       bst.insert(70, "70");
+      Assert.assertTrue(bst.numKeys() == 7);
       Assert.assertEquals(levelorder, bst.getLevelOrderTraversal());
       bst.print();
 
@@ -304,22 +298,49 @@ public class TestBST {
       bst.get(40);
 
     } catch (KeyNotFoundException e) {
-      List<Integer> levelorder = new ArrayList<>();
-      levelorder.add(50);
-      levelorder.add(20);
-      levelorder.add(60);
-      levelorder.add(10);
-      levelorder.add(30);
-      levelorder.add(70);
+      List<Integer> levelorder = Arrays.asList(new Integer[] {50, 20, 60, 10, 30, 70});
       Assert.assertEquals(bst.getLevelOrderTraversal(), levelorder);
       
       bst.print();
-
       
-    }catch (Exception e1) {
+    } catch (Exception e1) {
       e1.printStackTrace();
       fail("Unexpected exception 001: " + e1.getMessage());
     }
+  }
+  
+  @Test
+  void testBST_010_order_traversal_test() {
+    try {
+      List<Integer> preorder = Arrays.asList(new Integer[] {40, 20, 10, 30, 60, 50, 70});
+      List<Integer> inorder = Arrays.asList(new Integer[] {10, 20, 30, 40, 50, 60, 70});
+      List<Integer> postorder = Arrays.asList(new Integer[] {10, 30, 20, 50, 70, 60, 40});
+      List<Integer> levelorder = Arrays.asList(new Integer[] {40, 20, 60, 10, 30, 50, 70});
+      
+      bst.insert(40, "40");
+      bst.insert(20, "20");
+      bst.insert(60, "60");
+      bst.insert(10, "10");
+      bst.insert(30, "30");
+      bst.insert(50, "50");
+      bst.insert(70, "70");
+      
+      if(!bst.getPreOrderTraversal().equals(preorder))
+        fail("Preorder Traversal does not done as it should be");
+      if(!bst.getInOrderTraversal().equals(inorder))
+        fail("Inorder Traversal does not done as it should be");
+      if(!bst.getPostOrderTraversal().equals(postorder))
+        fail("Postorder Traversal does not done as it should be");
+      if(!bst.getLevelOrderTraversal().equals(levelorder))
+        fail("Levelorder Traversal does not done as it should be");
+      
+      bst.print();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+      fail("Unexpected exception 001: " + e.getMessage());
+    }
+    
   }
 
 }

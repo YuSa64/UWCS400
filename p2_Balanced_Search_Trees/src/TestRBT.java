@@ -1,5 +1,6 @@
 import static org.junit.Assert.fail;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
@@ -182,7 +183,7 @@ public class TestRBT  {
     // Add tests to make sure that rebalancing occurs even if the 
     // tree is larger.   Does it maintain it's balance?
     @Test
-    void test_005_insert_inorder_get_levelorder () {
+    void testRBT_005_insert_inorder_get_levelorder () {
       try {
         List<Integer> levelorder = new ArrayList<>();
         levelorder.add(20);
@@ -199,6 +200,7 @@ public class TestRBT  {
         rbt.insert(50, "50");
         rbt.insert(60, "60");
         rbt.insert(70, "70");
+        Assert.assertTrue(rbt.numKeys() == 7);
         Assert.assertTrue(rbt.isRed(40));
         Assert.assertTrue(rbt.isBlack(60));
         Assert.assertEquals(levelorder, rbt.getLevelOrderTraversal());
@@ -213,7 +215,7 @@ public class TestRBT  {
     // Does the height of the tree reflect it's actual height
     // Use the traversal orders to check.
     @Test
-    void test_006_insert_inorder_get_height () {
+    void testRBT_006_insert_inorder_get_height () {
       try {
         rbt.insert(10, "10");
         rbt.insert(20, "20");
@@ -235,7 +237,7 @@ public class TestRBT  {
     
     // Can you insert many and still "get" them back out?
     @Test
-    void testBST_007_insert_unbalanced_get() {
+    void testRBT_007_insert_unbalanced_get() {
       try {
         rbt.insert(10, "10");
         rbt.insert(20, "20");
@@ -256,11 +258,14 @@ public class TestRBT  {
       }
     }
     
-    // Does delete work?  Does the tree maintain balance when a key is deleted?
-    // If delete is not implemented, does calling it throw an UnsupportedOperationException
     @Test
-    void testBST_009_insert_balanced_remove_root() {
-      try {      
+    void testRBT_009_order_traversal_test() {
+      try {
+        List<Integer> preorder = Arrays.asList(new Integer[] {20, 10, 40, 30, 60, 50, 70});
+        List<Integer> inorder = Arrays.asList(new Integer[] {10, 20, 30, 40, 50, 60, 70});
+        List<Integer> postorder = Arrays.asList(new Integer[] {10, 30, 50, 70, 60, 40, 20});
+        List<Integer> levelorder = Arrays.asList(new Integer[] {20, 10, 40, 30, 60, 50, 70});
+        
         rbt.insert(10, "10");
         rbt.insert(20, "20");
         rbt.insert(30, "30");
@@ -269,27 +274,22 @@ public class TestRBT  {
         rbt.insert(60, "60");
         rbt.insert(70, "70");
         
-        Assert.assertTrue(rbt.remove(40));
-        Assert.assertTrue(rbt.getKeyAtRoot() == 20);
-        rbt.get(40);
-
-      } catch (KeyNotFoundException e) {
-        List<Integer> levelorder = new ArrayList<>();
-        levelorder.add(20);
-        levelorder.add(10);
-        levelorder.add(60);
-        levelorder.add(30);
-        levelorder.add(70);
-        levelorder.add(50);
-        Assert.assertEquals(rbt.getLevelOrderTraversal(), levelorder);
+        if(!rbt.getPreOrderTraversal().equals(preorder))
+          fail("Preorder Traversal does not done as it should be");
+        if(!rbt.getInOrderTraversal().equals(inorder))
+          fail("Inorder Traversal does not done as it should be");
+        if(!rbt.getPostOrderTraversal().equals(postorder))
+          fail("Postorder Traversal does not done as it should be");
+        if(!rbt.getLevelOrderTraversal().equals(levelorder))
+          fail("Levelorder Traversal does not done as it should be");
         
         rbt.print();
-
         
-      }catch (Exception e1) {
-        e1.printStackTrace();
-        fail("Unexpected exception 001: " + e1.getMessage());
+      } catch (Exception e) {
+        e.printStackTrace();
+        fail("Unexpected exception 001: " + e.getMessage());
       }
+      
     }
 
 } // copyright Deb Deppeler, all rights reserved, DO NOT SHARE
