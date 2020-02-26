@@ -1,5 +1,4 @@
 import static org.junit.Assert.fail;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Assert;
@@ -185,14 +184,8 @@ public class TestRBT  {
     @Test
     void testRBT_005_insert_inorder_get_levelorder () {
       try {
-        List<Integer> levelorder = new ArrayList<>();
-        levelorder.add(20);
-        levelorder.add(10);
-        levelorder.add(40);
-        levelorder.add(30);
-        levelorder.add(60);
-        levelorder.add(50);
-        levelorder.add(70);
+        List<Integer> levelorder = Arrays.asList(new Integer[] {20, 10, 40, 30, 60, 50, 70});
+        
         rbt.insert(10, "10");
         rbt.insert(20, "20");
         rbt.insert(30, "30");
@@ -259,7 +252,7 @@ public class TestRBT  {
     }
     
     @Test
-    void testRBT_009_order_traversal_test() {
+    void testRBT_008_order_traversal_test() {
       try {
         List<Integer> preorder = Arrays.asList(new Integer[] {20, 10, 40, 30, 60, 50, 70});
         List<Integer> inorder = Arrays.asList(new Integer[] {10, 20, 30, 40, 50, 60, 70});

@@ -49,7 +49,6 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
 
   }
 
-  private int size = 0;
 
 
   // USE AND DO NOT EDIT THESE CONSTANTS
@@ -57,9 +56,13 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
   public static final int BLACK = 1;
 
   private Node<K, V> root;
+  private int size;
 
   // TODO: define a default no-arg constructor
-  public RBT() {}
+  public RBT() {
+    root = null;
+    size = 0;
+  }
 
   /**
    * Returns the color of the node that contains the specified key. Returns RBT.RED if the node is
