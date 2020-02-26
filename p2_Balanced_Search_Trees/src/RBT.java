@@ -338,12 +338,18 @@ public class RBT<K extends Comparable<K>, V> implements STADT<K, V> {
 
     if (s == null) {
       if (p == g.left) {
-        if (c == p.right)
+        if (c == p.right) {
           rotateLeft(p);
+          c = p;
+          p = c.parent;
+        }
         rotateRight(g);
       } else {
-        if (c == p.left)
+        if (c == p.left) {
           rotateRight(p);
+          c = p;
+          p = c.parent;
+        }
         rotateLeft(g);
       }
       g.color = RED;
