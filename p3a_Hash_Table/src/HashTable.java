@@ -33,7 +33,7 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
   static final int DEFAULT_CAPACITY = 53;
   static final double DEFAULT_LOAD_FACTOR_THRESHOLD = 0.75;
 
-  ArrayList<Node<K, V>> buckets = new ArrayList<>();
+  Node<K, V>[] buckets;
   private int capacity;
   private double loadfactorthreshold;
   private int size = 0;
@@ -49,9 +49,7 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
   public HashTable(int initialCapacity, double loadFactorThreshold) {
     capacity = initialCapacity;
     loadfactorthreshold = loadFactorThreshold;
-
-    for (int i = 0; i < capacity; i++)
-      buckets.add(null);
+    buckets = (Node<K, V>[]) new Node[capacity];
   }
 
   // TODO: implement all unimplemented methods so that the class can compile
@@ -63,10 +61,10 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
 
     Node<K, V> input = new Node<K, V>(key, value);
     int index = Math.abs(key.hashCode() % capacity);
-    Node<K, V> head = buckets.get(index);
+    Node<K, V> head = buckets[index];
 
     if (head == null) {
-      buckets.set(index, input);
+      buckets[index] = input;
     } else {
       while (head != null) {
         if (head.key.equals(key))
@@ -77,20 +75,19 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
       if (head != null) {
         head.value = value;
       } else {
-        input.next = buckets.get(index);
-        buckets.set(index, input);
+        input.next = buckets[index];
+        buckets[index] = input;
       }
     }
     size++;
 
     if (getLoadFactor() > loadfactorthreshold) {
-      ArrayList<Node<K, V>> oldbuckets = buckets;
+      Node<K, V>[] oldbuckets = buckets;
       capacity = capacity * 2 + 1;
-      buckets = new ArrayList<>();
-      for (int i = 0; i < capacity; i++)
-        buckets.add(null);
-      for (int i = 0; i < oldbuckets.size(); i++) {
-        Node<K, V> node = oldbuckets.get(i);
+      buckets = (Node<K, V>[]) new Node[capacity];
+      
+      for (int i = 0; i < oldbuckets.length; i++) {
+        Node<K, V> node = oldbuckets[i];
         while (node != null) {
           insert(node.key, node.value);
           node = node.next;
@@ -106,14 +103,14 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
       throw new IllegalNullKeyException();
 
     int index = Math.abs(key.hashCode() % capacity);
-    Node<K, V> head = buckets.get(index);
+    Node<K, V> head = buckets[index];
 
     if (head == null)
       return false;
 
     if (head.key.equals(key)) {
       head = head.next;
-      buckets.set(index, head);
+      buckets[index] = head;
       size--;
       return true;
     } else {
@@ -139,7 +136,7 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
       throw new IllegalNullKeyException();
 
     int index = Math.abs(key.hashCode() % capacity);
-    Node<K, V> head = buckets.get(index);
+    Node<K, V> head = buckets[index];
 
     while (head != null) {
       if (head.key.equals(key))

@@ -1,61 +1,71 @@
 // TODO: add imports as needed
 
-// org.junit.Assert.*; 
+// org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 
 
-/** TODO: add class header comments here*/
-public class HashTableTest{
+/** TODO: add class header comments here */
+public class HashTableTest {
 
-    // TODO: add other fields that will be used by multiple tests
-    
-    // TODO: add code that runs before each test method
-    @Before
-    public void setUp() throws Exception {
+  // TODO: add other fields that will be used by multiple tests
+  HashTableADT<Integer, String> htIntegerKey;
 
-    }
+  // TODO: add code that runs before each test method
+  @Before
+  public void setUp() throws Exception {
+    htIntegerKey = new HashTable<Integer, String>();
+  }
 
-    // TODO: add code that runs after each test method
-    @After
-    public void tearDown() throws Exception {
+  // TODO: add code that runs after each test method
+  @After
+  public void tearDown() throws Exception {}
 
+  /**
+   * Tests that a HashTable returns an integer code indicating which collision resolution strategy
+   * is used. REFER TO HashTableADT for valid collision scheme codes.
+   */
+  @Test
+  public void test000_collision_scheme() {
+
+    int scheme = htIntegerKey.getCollisionResolution();
+    if (scheme < 1 || scheme > 9)
+      fail("collision resolution must be indicated with 1-9");
+  }
+
+  /**
+   * IMPLEMENTED AS EXAMPLE FOR YOU Tests that insert(null,null) throws IllegalNullKeyException
+   */
+  @Test
+  public void test001_IllegalNullKey() {
+    try {
+      HashTableADT htIntegerKey = new HashTable<Integer, String>();
+      htIntegerKey.insert(null, null);
+      fail("should not be able to insert null key");
+    } catch (IllegalNullKeyException e) {
+      /* expected */ } catch (Exception e) {
+      fail("insert null key should not throw exception " + e.getClass().getName());
     }
-    
-    /** 
-     * Tests that a HashTable returns an integer code
-     * indicating which collision resolution strategy 
-     * is used.
-     * REFER TO HashTableADT for valid collision scheme codes.
-     */
-    @Test
-    public void test000_collision_scheme() {
-        HashTableADT htIntegerKey = new HashTable<Integer,String>();
-        int scheme = htIntegerKey.getCollisionResolution();
-        if (scheme < 1 || scheme > 9) 
-            fail("collision resolution must be indicated with 1-9");
-    }
-        
-    /** IMPLEMENTED AS EXAMPLE FOR YOU
-     * Tests that insert(null,null) throws IllegalNullKeyException
-     */
-    @Test
-    public void test001_IllegalNullKey() {
-        try {
-            HashTableADT htIntegerKey = new HashTable<Integer,String>();
-            htIntegerKey.insert(null, null);
-            fail("should not be able to insert null key");
-        } 
-        catch (IllegalNullKeyException e) { /* expected */ } 
-        catch (Exception e) {
-            fail("insert null key should not throw exception "+e.getClass().getName());
-        }
-    }
-    
-    // TODO add your own tests of your implementation
-    
+  }
+
+  // TODO add your own tests of your implementation
+  @Test
+  public void test002() {}
+  @Test
+  public void test003() {}
+  @Test
+  public void test004() {}
+  @Test
+  public void test005() {}
+  @Test
+  public void test006() {}
+  @Test
+  public void test007() {}
+  @Test
+  public void test008() {}
+  @Test
+  public void test009() {}
 }
