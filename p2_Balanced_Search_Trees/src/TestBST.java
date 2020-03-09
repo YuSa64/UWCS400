@@ -246,10 +246,10 @@ public class TestBST {
       bst.insert(30, "30");
       bst.insert(50, "50");
       bst.insert(70, "70");
-      
+
       Assert.assertEquals(bst.get(20), "20");
       Assert.assertEquals(bst.get(50), "50");
-      
+
       bst.print();
 
     } catch (Exception e) {
@@ -268,7 +268,7 @@ public class TestBST {
       bst.insert(50, "50");
       bst.insert(60, "60");
       bst.insert(70, "70");
-      
+
       Assert.assertEquals(bst.get(40), "40");
       Assert.assertEquals(bst.get(60), "60");
 
@@ -284,7 +284,7 @@ public class TestBST {
   // If delete is not implemented, does calling it throw an UnsupportedOperationException
   @Test
   void testBST_009_insert_balanced_remove_root() {
-    try {      
+    try {
       bst.insert(40, "40");
       bst.insert(20, "20");
       bst.insert(60, "60");
@@ -292,7 +292,7 @@ public class TestBST {
       bst.insert(30, "30");
       bst.insert(50, "50");
       bst.insert(70, "70");
-      
+
       Assert.assertTrue(bst.remove(40));
       Assert.assertTrue(bst.getKeyAtRoot() == 50);
       bst.get(40);
@@ -300,15 +300,15 @@ public class TestBST {
     } catch (KeyNotFoundException e) {
       List<Integer> levelorder = Arrays.asList(new Integer[] {50, 20, 60, 10, 30, 70});
       Assert.assertEquals(bst.getLevelOrderTraversal(), levelorder);
-      
+
       bst.print();
-      
+
     } catch (Exception e1) {
       e1.printStackTrace();
       fail("Unexpected exception 001: " + e1.getMessage());
     }
   }
-  
+
   @Test
   void testBST_010_order_traversal_test() {
     try {
@@ -316,7 +316,7 @@ public class TestBST {
       List<Integer> inorder = Arrays.asList(new Integer[] {10, 20, 30, 40, 50, 60, 70});
       List<Integer> postorder = Arrays.asList(new Integer[] {10, 30, 20, 50, 70, 60, 40});
       List<Integer> levelorder = Arrays.asList(new Integer[] {40, 20, 60, 10, 30, 50, 70});
-      
+
       bst.insert(40, "40");
       bst.insert(20, "20");
       bst.insert(60, "60");
@@ -324,23 +324,23 @@ public class TestBST {
       bst.insert(30, "30");
       bst.insert(50, "50");
       bst.insert(70, "70");
-      
-      if(!bst.getPreOrderTraversal().equals(preorder))
+
+      if (!bst.getPreOrderTraversal().equals(preorder))
         fail("Preorder Traversal does not done as it should be");
-      if(!bst.getInOrderTraversal().equals(inorder))
+      if (!bst.getInOrderTraversal().equals(inorder))
         fail("Inorder Traversal does not done as it should be");
-      if(!bst.getPostOrderTraversal().equals(postorder))
+      if (!bst.getPostOrderTraversal().equals(postorder))
         fail("Postorder Traversal does not done as it should be");
-      if(!bst.getLevelOrderTraversal().equals(levelorder))
+      if (!bst.getLevelOrderTraversal().equals(levelorder))
         fail("Levelorder Traversal does not done as it should be");
-      
+
       bst.print();
-      
+
     } catch (Exception e) {
       e.printStackTrace();
       fail("Unexpected exception 001: " + e.getMessage());
     }
-    
+
   }
 
 }
