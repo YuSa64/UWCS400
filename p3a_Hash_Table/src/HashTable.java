@@ -83,6 +83,7 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
 
     if (getLoadFactor() > loadfactorthreshold) {
       Node<K, V>[] oldbuckets = buckets;
+      size = 0;
       capacity = capacity * 2 + 1;
       buckets = (Node<K, V>[]) new Node[capacity];
       
