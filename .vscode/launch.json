@@ -1,0 +1,113 @@
+{
+    // IntelliSense를 사용하여 가능한 특성에 대해 알아보세요.
+    // 기존 특성에 대한 설명을 보려면 가리킵니다.
+    // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Main",
+            "request": "launch",
+            "mainClass": "application.Main",
+            "projectName": "p5_HelloFX"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Main<p0_JavaIOPractice>",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "p0_JavaIOPractice"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-CompareDS<p1_ImplementTestADT>",
+            "request": "launch",
+            "mainClass": "CompareDS",
+            "projectName": "p1_ImplementTestADT"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-CompareDS_drew<p1_ImplementTestADT>",
+            "request": "launch",
+            "mainClass": "CompareDS_drew",
+            "projectName": "p1_ImplementTestADT"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-CompareDS_gege<p1_ImplementTestADT>",
+            "request": "launch",
+            "mainClass": "CompareDS_gege",
+            "projectName": "p1_ImplementTestADT"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-CompareDS<p2_Balanced_Search_Trees>",
+            "request": "launch",
+            "mainClass": "CompareDS",
+            "projectName": "p2_Balanced_Search_Trees"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Version<p2_Balanced_Search_Trees>",
+            "request": "launch",
+            "mainClass": "junit.runner.Version",
+            "projectName": "p2_Balanced_Search_Trees"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-TestRunner<p2_Balanced_Search_Trees>",
+            "request": "launch",
+            "mainClass": "junit.textui.TestRunner",
+            "projectName": "p2_Balanced_Search_Trees"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-ConsoleLauncher<p2_Balanced_Search_Trees>",
+            "request": "launch",
+            "mainClass": "org.junit.platform.console.ConsoleLauncher",
+            "projectName": "p2_Balanced_Search_Trees"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-AutoComplete<p2_Balanced_Search_Trees>",
+            "request": "launch",
+            "mainClass": "org.junit.platform.console.shadow.picocli.AutoComplete",
+            "projectName": "p2_Balanced_Search_Trees"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-JUnitCore<p2_Balanced_Search_Trees>",
+            "request": "launch",
+            "mainClass": "org.junit.runner.JUnitCore",
+            "projectName": "p2_Balanced_Search_Trees"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-MyProfiler<p3b_Performance_Analysis>",
+            "request": "launch",
+            "mainClass": "MyProfiler",
+            "projectName": "p3b_Performance_Analysis"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-SampleProfilerApplication<p3b_Performance_Analysis>",
+            "request": "launch",
+            "mainClass": "SampleProfilerApplication",
+            "projectName": "p3b_Performance_Analysis"
+        },
+        {
+        "type": "java",
+        "name": "CodeLens (Launch) - Main",
+        "request": "launch",
+        "vmArgs": "--module-path /Users/Jun/javafx-sdk-11.0.2/lib--add-modules javafx.controls,javafx.fxml",
+        "mainClass": "application.Main",
+        "projectName": "p5_HelloFX"
+        }
+    ]
+}
